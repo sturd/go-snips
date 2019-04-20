@@ -1,0 +1,22 @@
+{
+  "input": "this here is a test",
+  "intent": {
+    "intentName": "testIntent",
+    "confidenceScore": 0.9744988
+  },
+  "slots": [
+    {
+      "rawValue": "test",
+      "value": {
+        "kind": "Custom",
+        "value": "test"
+      },
+      "range": {
+        "start": 15,
+        "end": 19
+      },
+      "entity": "snips/default--intentMode",
+      "slotName": "intentMode"
+    }
+  ]
+}
