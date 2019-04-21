@@ -11,20 +11,22 @@ Documentation for setting up the Snips voice assistant can be found [here](https
 
 ### Usage
 
-    import "github.com/sturd/go-snips"
+```go
+import "github.com/sturd/go-snips"
 
-    func main() {
-        snipsOpts := snips.Options{
-            Name: "MySnipsHandler",
-            Host: "[SNIPS_MQTT_ADDRESS]",
-        }
-        snips, err := snips.NewClient(snipsOpts)
-        if err != nil {
-            panic(err)
-        }
-        snips.SubscribeIntentHandler("mySnipsIntent", intentHandler)
+func main() {
+    snipsOpts := snips.Options{
+        Name: "MySnipsHandler",
+        Host: "[SNIPS_MQTT_ADDRESS]",
     }
+    snips, err := snips.NewClient(snipsOpts)
+    if err != nil {
+        panic(err)
+    }
+    snips.SubscribeIntentHandler("mySnipsIntent", intentHandler)
+}
 
-    func intentHandler(Client mqtt.Client, Intent snips.IntentMessage) {
-        // Handle the parsed intent
-    }
+func intentHandler(Client mqtt.Client, Intent snips.IntentMessage) {
+    // Handle the parsed intent
+}
+```
