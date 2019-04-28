@@ -58,11 +58,14 @@ func NewClient(options Options) (*Client, error) {
 	if token := client.mqtt.Connect(); token.Wait() && token.Error() != nil {
 		return nil, token.Error()
 	}
-	if token := client.mqtt.Subscribe(mqttIntentTopic, mqttBrokerSubQOS, client.handleIntentParsed); token.Wait() && token.Error() != nil {
-		return nil, token.Error()
+
+	err := client.subscribeToTopic(mqttIntentTopic, mqttBrokerSubQOS, client.handleIntentParsed)
+	if err != nil {
+		return nil, err
 	}
-	if token := client.mqtt.Subscribe(mqttHotwordTopic, mqttBrokerSubQOS, client.handleHotword); token.Wait() && token.Error() != nil {
-		return nil, token.Error()
+	err = client.subscribeToTopic(mqttHotwordTopic, mqttBrokerSubQOS, client.handleHotword)
+	if err != nil {
+		return nil, err
 	}
 	return client, nil
 }
@@ -74,6 +77,12 @@ func buildClient(options Options) *Client {
 	client.mqtt = mqtt.NewClient(options.convertOptions())
 	client.intents = make(snipsIntents)
 	return client
+}
+
+func (c *Client) subscribeToTopic(topic string, qos byte, handler mqtt.MessageHandler) error {
+	token := c.mqtt.Subscribe(topic, qos, handler)
+	token.Wait()
+	return token.Error()
 }
 
 // Function is subscribed to mqttIntentTopic during NewClient().  The raw, JSON data is unmarshaled
